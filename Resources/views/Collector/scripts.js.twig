@@ -1,0 +1,124 @@
+function toggle(el) {
+    if (typeof (el) == 'object') {
+        var selector = el.getAttribute('href');
+    } else {
+        var selector = '#' + el;
+    }
+    var target = document.querySelector(selector);
+    var flag = (target.style.display == 'block');
+    target.style.display = flag ? 'none' : 'block';
+    return false;
+}
+
+function sortTable(header, column, targetId, cellSelector, recurseSelector, depth) {
+    var direction = parseInt(header.getAttribute('data-sort-direction')) || 1,
+            items = [],
+            depth = depth || 0,
+            cellSelector = cellSelector ? cellSelector: 'td',
+            target = document.getElementById(targetId),
+            rows = target.children,
+            headers = header.parentElement.children,
+            i;
+    for (i = 0; i < rows.length; ++i) {
+        items.push(rows[i]);
+    }
+
+    items.sort(function (a, b) {
+        var av = document.querySelectorAll('#'+a.id+'>'+cellSelector)[column].innerHTML;
+        var bv = document.querySelectorAll('#'+b.id+'>'+cellSelector)[column].innerHTML;
+       
+        var af = parseFloat(av);
+        var bf = parseFloat(bv);
+        
+        if(isNaN(af) || isNaN(bf)){
+            return av > bv ? -direction : ( av < bv ? direction : 0 );
+        }
+        return direction * (af - bf);
+    });
+
+    for (i = 0; i < items.length; ++i) {
+        Sfjs.removeClass(items[i], i % 2 ? 'even' : 'odd');
+        Sfjs.addClass(items[i], i % 2 ? 'odd' : 'even');
+        target.appendChild(items[i]);
+    }
+   
+    for (i = 0; i < rows.length; ++i) {
+        document.querySelectorAll('#'+rows[i].id+'>'+recurseSelector).forEach(function(child){
+             sortTable(header, column, child.id, cellSelector, recurseSelector, depth+1);
+        });
+    }
+    
+    if(depth === 0) {
+        for (i = 0; i < headers.length; ++i) {
+            headers[i].removeAttribute('data-sort-direction');
+            if (headers[i].children.length > 0) {
+                headers[i].children[0].innerHTML = '';
+            }
+        }
+        header.setAttribute('data-sort-direction', (-1 * direction).toString());
+        header.children[0].innerHTML = direction > 0 ? '<span class="text-muted">&#9650;</span>' : '<span class="text-muted">&#9660;</span>';
+    }
+}
+
+function highlightRow(row) {
+    if(typeof(row)=='string') {
+        row = document.querySelector(row);
+    }
+    var selected = row.parentNode.querySelector('.highlight-row');
+    if(selected && selected!==row) {
+        Sfjs.toggleClass(selected,'highlight-row');
+    }
+    Sfjs.toggleClass(row,'highlight-row');
+}
+
+function openTree(selector) {
+    var root = document.getElementById('tree-root');
+    var node = current = root.querySelector(selector);
+    while(current!==root) {
+        if(current.tagName == 'LI' && current.className.indexOf('tree--open')<0 ) {
+            Sfjs.toggleClass(current,'tree--open');
+        }
+        current = current.parentNode;
+    }
+    node.scrollIntoView(true);
+}
+
+function toggleTree(link) {
+    var ul = document.querySelector(link.getAttribute('href'));
+    var isOpen = ul.style.display=='block';
+    ul.style.display= isOpen ? 'none':'block';
+}
+
+
+Popup = {
+    getElement: function(element) {
+        return document.querySelector('.popup'+(element?'__'+element:''));
+    },
+    load: function(url) {
+        this.open();
+        
+        
+        if(url.charAt(0)=='#'){
+            this.setContent( document.querySelector(url).innerHTML );
+        }else{
+            this.setContent('Loading...');
+           var self = this;
+           Sfjs.request(url, function(xhr){
+               self.setContent(xhr.responseText);
+           });
+        }
+        
+    },
+    setContent:function(content) {
+        this.getElement('content').innerHTML = content;
+    },
+    open: function() {
+        this.getElement('shadow').style.display='block';
+        this.getElement('window').style.display='block';
+    },
+    close: function() {
+        this.setContent('');
+        this.getElement('shadow').style.display='none';
+        this.getElement('window').style.display='none';
+    }
+};

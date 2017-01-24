@@ -1,0 +1,170 @@
+{% extends app.request.isXmlHttpRequest ? '@WebProfiler/Profiler/ajax_layout.html.twig' : '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        {{ include('PixersDoctrineProfilerBundle:Collector:styles.css.twig') }}
+    </style>
+    <script type="text/javascript">
+        {{ include('PixersDoctrineProfilerBundle:Collector:scripts.js.twig') }}
+    </script>
+{% endblock head %}
+
+{% block toolbar %}
+    {% if collector.count > 0 %}
+        {% set icon %}
+            <span class="icon">{{ include('PixersDoctrineProfilerBundle:Collector:icon.svg.twig') }}</span>
+        {% endset %}
+
+        {% set text %}
+            <div class="sf-toolbar-info-piece">
+                <b>Query time</b>
+                <span>{{ (collector.executiontime * 1000)|round }} ms</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Hydration time</b>
+                <span>{{ (collector.hydrationtime * 1000)|round }} ms</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Queries</b>
+                <span class="sf-toolbar-status">{{ collector.count }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Duplicated queries</b>
+                <span class="sf-toolbar-status">{{ collector.duplicatedcount }}</span>
+            </div>
+        {% endset %}
+
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', {'link': true}) }}
+    {% endif %}
+{% endblock %}
+
+{% block menu %}
+    <span class="label {{ collector.count==0 ? 'disabled' : '' }}">
+        <span class="icon">{{ include('PixersDoctrineProfilerBundle:Collector:icon.svg.twig') }}</span>
+        <strong>Doctrine profiler</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    {% if 'trace' == page %}
+        {{ render(controller('PixersDoctrineProfilerBundle:Profiler:trace', {
+            token: token,
+            panel: 'db',
+            connectionName: app.request.query.get('connection'),
+            id: app.request.query.get('id')
+        })) }}
+    {% else %}
+        {{ block('queries') }}
+    {% endif %}
+{% endblock panel %}
+
+{% block queries %}
+    {% set total_query_time = collector.executiontime %}
+    {% set total_hydration_time = collector.hydrationtime %}
+    {% set total_time = total_hydration_time + total_query_time %}
+    {% set total_memory = collector.memoryusage %}
+    {% set queries = collector.queries %}
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.count }}</span>
+            <span class="label">Queries</span>
+        </div>
+            
+        <div class="metric">
+            <span class="value">{{ collector.duplicatedcount }}</span>
+            <span class="label">Duplicated queries</span>
+        </div>
+
+        <div class="metric">
+            <span class="value">{{ (total_query_time * 1000)|round(2) }} ms</span>
+            <span class="label">Query time</span>
+        </div>
+        
+        <div class="metric">
+            <span class="value">{{ (total_hydration_time * 1000)|round }} ms</span>
+            <span class="label">Hydration time</span>
+        </div>
+    </div>
+    {% if queries is empty %}
+        <div class="empty">
+            <p>No database queries were performed.</p>
+        </div>
+    {% else %}
+        {% set nodes = collector.flattenCallGraph.children %}
+        {% set valueAccessor = collector.nodeValueAccessor %}
+        <div class="tree-wrapper">
+            {% include 'PixersDoctrineProfilerBundle:Collector:tree.html.twig' with {
+                nodes: nodes,
+                valueAccessor: valueAccessor,
+            } %}
+        </div>
+        <table class="alt queries-table">
+        {% set columns = [
+            '#',
+            'Count',
+            'Query time',
+            'Hydration time',
+            'Total time',
+            'Memory',
+            'Results',
+            'Cacheable',
+            'Hydrator'
+        ] %}
+        <thead>
+        <tr>
+            {% for column in columns %}
+                <th class="nowrap" onclick="javascript:sortTable(this, {{ loop.index0 }}, 'queries')" data-sort-direction="-1" style="cursor: pointer;"><span></span>{{ column|raw }}</th>
+            {% endfor %}
+            <th style="width: 100%;">Info</th>
+        </tr>
+        </thead>
+        <tbody id="queries">
+            {% for i, query in queries %}
+                <tr id="query-{{ i }}" onclick="highlightRow(this)">
+                    <td class="nowrap">{{ loop.index }}</td>
+                    <td class="nowrap">{{ query.count }}</td>
+                    <td class="nowrap">{{ '%0.2f'|format(query.execution_time * 1000) }}&nbsp;ms<br><span class="percval">({{ (query.execution_time / total_query_time*100)|round(2) }}%)</span></td>
+                    <td class="nowrap">{{ '%0.2f'|format(query.hydration_time * 1000) }}&nbsp;ms<br><span class="percval">({{ total_hydration_time ? (query.hydration_time / total_hydration_time*100)|round(2) : 0 }}%)</span></td>
+                    <td class="nowrap">{{ '%0.2f'|format((query.execution_time+query.hydration_time) * 1000) }}&nbsp;ms<br><span class="percval">({{ ((query.execution_time + query.hydration_time) / total_time * 100)|round(2) }}%)</span></td>
+                    <td class="nowrap">{{ (query.memory/1024)|round }}&nbsp;KB<br><span class="percval">({{ (query.memory / total_memory * 100)|round(2) }}%)</span></td>
+                    <td class="nowrap">{{ query.result_count }}</td>
+                    <td class="nowrap">{{ query.cacheable?'Yes':'No' }}</td>
+                    <td class="nowrap">{{ query.hydrator|split('\\')|last }}</td>
+                    <td>
+                        {% spaceless %}
+                            {% for i,trace in query.trace if trace.query_source|default() %}
+                                {% set prevTrace = query.trace[i+1] %}
+                                {% if trace.file is defined and trace.file and trace.line is defined and trace.line %}
+                                        <abbr title="{{trace.file}}">in</abbr>
+                                {% endif %}
+                                {% if prevTrace.function %}
+
+                                    <strong>&nbsp;<abbr title="{{ prevTrace.class|default() }}">{{ prevTrace.class|default()|split('\\')|last }}</abbr>
+                                        {{- prevTrace.type|default() ~ prevTrace.function -}}</strong>
+
+                                {% endif %}
+
+
+                            {% endfor %}
+                        {% endspaceless %}
+                        {{ query.sql|doctrine_profiler_minify_query|doctrine_pretty_query(highlight_only = true) }} 
+                        <div>
+                            <strong class="font-normal text-small">Parameters</strong>: {{ query.params|yaml_encode }}
+                        </div>
+                        <div class="text-small font-normal">
+                            <a href="#" class="text-small" onclick="openTree('[data-query={{ '"'~i~'"' }}]');return false;">Jump to callgraph</a>  &nbsp;&nbsp; 
+                            <a href="{{ path('_profiler', {panel: 'doctrine_profiler', token: token, page: 'trace', id: i}) }}" data-target-id="trace-{{ i }}" onclick="Popup.load(this.href);return false;">Show trace</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    {% endif %}
+    <div class="popup__shadow" onclick="Popup.close()"></div>
+    <div class="popup__window">
+        <a href="#" class="popup__close" onclick="Popup.close();return false;">&times;</a>    
+        <div class="popup__content"></div>
+    </div>
+{% endblock %}

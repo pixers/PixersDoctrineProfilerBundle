@@ -1,0 +1,20 @@
+{
+    "name": "pixers/doctrine-profiler-bundle",
+    "type": "symfony-bundle",
+    "description": "PIXERS Doctrine profiler bundle",
+    "require": {
+        "php": ">=5.4",
+        "doctrine/orm": "*",
+        "doctrine/doctrine-bundle": "*",
+        "symfony/framework-bundle": "~2.6 || ~3.0"
+    },
+    "authors": [
+        {
+            "name": "Bartłomiej Ojrzeński",
+            "email": "bartlomiej.ojrzenski@pixers.pl"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Pixers\\DoctrineProfilerBundle\\": "" }
+    }
+}
