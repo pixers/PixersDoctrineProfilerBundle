@@ -48,7 +48,7 @@
 
 {% block panel %}
     {% if 'trace' == page %}
-        {{ render(controller('PixersDoctrineProfilerBundle:Profiler:trace', {
+        {{ render(controller('pixers_doctrine_profiler.profiler_controller:traceAction', {
             token: token,
             panel: 'db',
             connectionName: app.request.query.get('connection'),

@@ -19,5 +19,9 @@
     <service id="pixers_doctrine_profiler.twig_extension" class="Pixers\DoctrineProfilerBundle\Twig\DoctrineProfilerExtension">
       <tag name="twig.extension"/>
     </service>
+    <service id="pixers_doctrine_profiler.profiler_controller" class="Pixers\DoctrineProfilerBundle\Controller\ProfilerController">
+      <argument type="service" id="profiler" />
+      <argument type="service" id="templating" />
+    </service>
   </services>
 </container>

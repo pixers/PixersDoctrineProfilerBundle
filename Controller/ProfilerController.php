@@ -2,29 +2,31 @@
 
 namespace Pixers\DoctrineProfilerBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Profiler\Profiler;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**
  * ProfilerController.
  *
  * @author Bartłomiej Ojrzeński <bartlomiej.ojrzenski@pixers.pl>
  */
-class ProfilerController implements ContainerAwareInterface
+class ProfilerController
 {
     /**
-     * @var ContainerInterface
+     * @var Profiler
      */
-    private $container;
+    private $profiler;
 
     /**
-     * {@inheritdoc}
+     * @var EngineInterface
      */
-    public function setContainer(ContainerInterface $container = null)
+    private $templating;
+
+    public function __construct(Profiler $profiler, EngineInterface $templating)
     {
-        $this->container = $container;
+        $this->profiler = $profiler;
+        $this->templating = $templating;
     }
 
     /**
@@ -35,18 +37,16 @@ class ProfilerController implements ContainerAwareInterface
      *
      * @return Response A Response instance
      */
-    public function traceAction(Request $request, $token, $id)
+    public function traceAction($token, $id)
     {
-        /** @var $profiler \Symfony\Component\HttpKernel\Profiler\Profiler */
-        $profiler = $this->container->get('profiler');
-        $profiler->disable();
-
-        $profile = $profiler->loadProfile($token);
+        $this->profiler->disable();
+        $profile = $this->profiler->loadProfile($token);
         $queries = $profile->getCollector('doctrine_profiler')->getQueries();
 
         if (!isset($queries[$id])) {
             return new Response('This query does not exist.');
         }
+
         $query = $queries[$id];
         $source = 0;
         foreach ($query['trace'] as $i => $trace) {
@@ -55,7 +55,7 @@ class ProfilerController implements ContainerAwareInterface
             }
         }
 
-        return $this->container->get('templating')->renderResponse('PixersDoctrineProfilerBundle:Collector:trace.html.twig', array(
+        return $this->templating->renderResponse('PixersDoctrineProfilerBundle:Collector:trace.html.twig', array(
             'source' => $source,
             'traces' => $query['trace'],
             'id' => $id,
