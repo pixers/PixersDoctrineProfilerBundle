@@ -1,7 +1,8 @@
+{% include 'PixersDoctrineProfilerBundle:Collector:tree.css.twig' %}
+
 .sf-reset .traces {
     padding: 0 0 1em 1.5em;
 }
-
 .sf-reset .traces abbr {
     border-bottom-color: #aaa;
     padding-bottom: 2px;
@@ -10,15 +11,13 @@
     color: #868686;
     text-decoration: none;
 }
-
 .sf-reset .traces li {
     font-size: 12px;
     color: #868686;
     padding: 5px 4px;
     list-style-type: decimal;
-    margin:0 0 0 20px;
+    margin: 0 0 0 20px;
     line-height: normal;
-    
 }
 .sf-reset ol {
     margin: 0;
@@ -31,13 +30,11 @@
 .sf-reset .traces li.selected {
     background: rgba(255, 255, 153, 0.5);
 }
-
 .sf-reset .traces ol li {
     font-size: 12px;
     color: #777;
     list-style-position: inside;
 }
-
 .sf-reset .trace {
     border: 1px solid #DDD;
     background: #FFF;
@@ -50,28 +47,24 @@
     font-size: 13px;
     white-space: nowrap;
 }
-
 .sf-reset .toggle {
     vertical-align: middle;
 }
-
 .container {
     max-width: none;
 }
-
 .toggleicon,
-.sf-reset .toggleicon, 
+.sf-reset .toggleicon,
 .sf-reset .toggleicon:hover {
     width: 16px;
     height: 16px;
     display: inline-block;
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAgBAMAAADpp+X/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QweDgwx4LcKwAAAABVQTFRFAAAA////////////////ZmZm////bvjBwAAAAAV0Uk5TABZwsuCVEUjgAAAAAWJLR0QF+G/pxwAAAE1JREFUGNNjSHMSYGBgUEljSGYAAzMGBwiDhUEBwmBiEIAwGBmwgTQgQGWgA7h2uIFwK+CWwp1BpHvYEqDuATEYkBlY3IOmBq6dCPcAAIT5Eg2IksjQAAAAAElFTkSuQmCC") no-repeat bottom left #5eb5e0;
 }
-.toggleicon--open, 
+.toggleicon--open,
 .sf-reset .toggleicon--open {
     background-position: top left;
 }
-
 .popup__shadow {
     display: none;
     position: fixed;
@@ -82,7 +75,6 @@
     background: rgba(0, 0, 0, 0.6);
     z-index: 10000;
 }
-
 .popup__close {
     position: absolute;
     right: 0px;
@@ -96,7 +88,6 @@
     line-height: 20px;
     text-align: center;
 }
-
 .popup__content {
     margin: 2vh;
     max-height: 86vh;
@@ -104,7 +95,6 @@
     backface-visibility: hidden;
     transform: translateZ(0) scale(1.0, 1.0);
 }
-
 .popup__window {
     display: none;
     position: fixed;
@@ -118,130 +108,15 @@
     max-width: 90%;
     max-height: 90%;
 }
-
 .popup__content pre {
     overflow: visible;
 }
-
 .highlight-row td {
     background: rgba(240, 181, 24, 0.3);
 }
-
 .popup__content .traces {
     min-width: 50vw;
 }
-
-.tree__header,
-.tree__row {
-    width: 100%;
-    display: table;
-    border-top: 1px solid #E0E0E0;
-}
-
-.tree__header {
-    background: #E0E0E0;
-    font-weight: bold;
-}
-
-.tree__col {
-    padding: 8px 10px;
-    display: table-cell;
-    width: 70px;
-}
-
-.tree__col:first-child {
-    width: auto;
-}
-
-.tree-wrapper {
-    background: #fff;
-    border: 1px solid #E0E0E0;
-    box-shadow: 0px 0px 1px rgba(128, 128, 128, .2);
-}
-
-.tree,
-.tree ul {
-    margin: 0 0 0 0;
-    padding: 0;
-    list-style: none;
-    position: relative;
-}
-
-.tree__toggle {
-    color: inherit;
-    display: block;
-}
-
-.tree__switch {
-    float: left;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    text-align: center;
-    border: 1px solid #E0E0E0;
-    position: absolute;
-    left: 14px;
-    top: 0;
-}
-
-.tree__switch:before {
-    content: '+';
-}
-
-.tree ul {
-    margin-left: -15px;
-    display: none
-}
-
-.tree:before,
-.tree ul:before {
-    content: "";
-    display: block;
-    width: 0;
-    position: absolute;
-    top: -40px;
-    bottom: 0;
-    left: 0;
-    border-left: 1px solid #E0E0E0;
-}
-
 .percval {
     font-size: 80%;
-}
-
-.tree li {
-    margin: 10px 0;
-    padding: 10px 0 0 40px;
-    position: relative;
-}
-
-.tree .tree__leaf:before {
-    width: 40px;
-}
-
-.tree li:before {
-    content: "";
-    display: block;
-    width: 10px;
-    height: 0;
-    border-top: 1px solid #E0E0E0;
-    margin-top: -1px;
-    position: absolute;
-    top: 11px;
-    left: 0;
-}
-
-.tree li:last-child:before {
-    background: white;
-    height: auto;
-    top: 11px;
-    bottom: 0;
-}
-
-.tree--open > ul{
-    display: block;
-}
-
-.tree--open > .tree__row .tree__switch:before{
-    content: '-';
 }
