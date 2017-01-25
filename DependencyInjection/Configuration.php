@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('pixers_doctrine_profiler');
+        $treeBuilder->root('pixers_doctrine_profiler');
 
         return $treeBuilder;
     }
