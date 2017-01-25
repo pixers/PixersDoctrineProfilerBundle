@@ -2,6 +2,7 @@
     "name": "pixers/doctrine-profiler-bundle",
     "type": "symfony-bundle",
     "description": "PIXERS Doctrine profiler bundle",
+    "license": "BSD 3-Clause",
     "require": {
         "php": ">=5.4",
         "doctrine/orm": "*",

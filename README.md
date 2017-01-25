@@ -27,21 +27,21 @@ Installation
 Installation is a two step process.
 
 1. Install this bundle using Composer:
-
-```bash
-$ composer require pixers/doctrine-profiler-bundle
-```
+    
+    ```bash
+    $ composer require pixers/doctrine-profiler-bundle
+    ```
 
 2. Enable bundle in AppKernel (_only in dev and test environments_):
+    
+    ```php
+    // in AppKernel::registerBundles()
 
-```php
-// in AppKernel::registerBundles()
-
-if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-    // ...
-    $bundles[] = new Pixers\DoctrineProfilerBundle\PixersDoctrineProfilerBundle();
-}
-```
+    if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+        // ...
+        $bundles[] = new Pixers\DoctrineProfilerBundle\PixersDoctrineProfilerBundle();
+    }
+    ```
 
 Screens
 -------
