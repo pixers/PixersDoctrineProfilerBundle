@@ -9,6 +9,9 @@
         "doctrine/doctrine-bundle": "~1.2",
         "symfony/framework-bundle": "~2.6 || ~3.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "5.5.*"
+    },
     "authors": [
         {
             "name": "Bartłomiej Ojrzeński",

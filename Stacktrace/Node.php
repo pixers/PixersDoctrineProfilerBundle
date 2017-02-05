@@ -30,11 +30,6 @@ class Node implements \RecursiveIterator
     protected $id;
 
     /**
-     * @var int
-     */
-    protected $totalCount = 0;
-
-    /**
      * @var Node[]
      */
     public $nodes = array();
@@ -47,7 +42,10 @@ class Node implements \RecursiveIterator
     {
         $this->trace = $trace;
         $this->parent = $parent;
-        $this->id = $parent ? $parent->getRoot()->getTotalCount() : 0;
+        $this->id = $this->createId();
+        if ($parent) {
+            $parent->nodes[$this->getId()] = $this;
+        }
     }
 
     /**
@@ -99,13 +97,13 @@ class Node implements \RecursiveIterator
     }
 
     /**
-     * @param array $trace
-     *
-     * @return string
+     * @return int
      */
-    public static function createId($trace)
+    protected function createId()
     {
-        return md5(serialize($trace));
+        static $id = 0;
+        
+        return ++$id;
     }
 
     /**
@@ -120,18 +118,9 @@ class Node implements \RecursiveIterator
                 return $node;
             }
         }
-        ++$this->getRoot()->totalCount;
+        
         $node = new static($trace, $this);
-
-        return $this->nodes[$node->getId()] = $node;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalCount()
-    {
-        return $this->totalCount;
+        return $node;
     }
 
     /**
@@ -163,7 +152,7 @@ class Node implements \RecursiveIterator
      */
     public function hasChildren()
     {
-        return !empty($this->current()->getNodes());
+        return $this->current() && !empty($this->current()->getNodes());
     }
 
     /**
@@ -172,16 +161,6 @@ class Node implements \RecursiveIterator
     public function getChildren()
     {
         return $this->current();
-    }
-
-    /**
-     * @param type $mode
-     *
-     * @return \RecursiveIteratorIterator
-     */
-    public function getRecursiveIterator($mode = \RecursiveIteratorIterator::SELF_FIRST)
-    {
-        return new \RecursiveIteratorIterator($this, $mode);
     }
 
     /**
