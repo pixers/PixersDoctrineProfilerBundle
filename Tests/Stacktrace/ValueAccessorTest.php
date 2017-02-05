@@ -2,7 +2,6 @@
 
 use Pixers\DoctrineProfilerBundle\Stacktrace\Node;
 use Pixers\DoctrineProfilerBundle\Stacktrace\ValueAccessor;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 /**
  * ValueAccessorTest
@@ -10,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
  * @author Bartłomiej Ojrzeński <bartlomiej.ojrzenski@pixers.pl>
  *
  */
-class ValueAccessorTest extends TestCase
+class ValueAccessorTest extends PHPUnit_Framework_TestCase
 {
     public function testValueAcccesor()
     {

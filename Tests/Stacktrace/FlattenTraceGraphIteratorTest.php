@@ -2,7 +2,6 @@
 
 use Pixers\DoctrineProfilerBundle\Stacktrace\FlattenTraceGraphIterator;
 use Pixers\DoctrineProfilerBundle\Stacktrace\Node;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 /**
  * FlattenTraceGraphIteratorTest
@@ -10,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
  * @author Bartłomiej Ojrzeński <bartlomiej.ojrzenski@pixers.pl>
  *
  */
-class FlattenTraceGraphIteratorTest extends TestCase
+class FlattenTraceGraphIteratorTest extends PHPUnit_Framework_TestCase
 {
     public function testFlattenIterator()
     {

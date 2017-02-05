@@ -1,6 +1,5 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
 use Pixers\DoctrineProfilerBundle\Stacktrace\Node;
 
 /**
@@ -9,7 +8,7 @@ use Pixers\DoctrineProfilerBundle\Stacktrace\Node;
  * @author Bartłomiej Ojrzeński <bartlomiej.ojrzenski@pixers.pl>
  *
  */
-class NodeTest extends TestCase
+class NodeTest extends PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {
