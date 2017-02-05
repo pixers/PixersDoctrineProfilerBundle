@@ -1,5 +1,13 @@
 PIXERS Doctrine Profiler Bundle
 ===============================
+
+[![Build Status](https://travis-ci.org/pixers/PixersDoctrineProfilerBundle.png?branch=master)](https://travis-ci.org/pixers/PixersDoctrineProfilerBundle)
+[![Latest Stable Version](https://poser.pugx.org/pixers/doctrine-profiler-bundle/v/stable)](https://packagist.org/packages/pixers/doctrine-profiler-bundle)
+[![Total Downloads](https://poser.pugx.org/pixers/doctrine-profiler-bundle/downloads)](https://packagist.org/packages/pixers/doctrine-profiler-bundle)
+[![License](https://poser.pugx.org/pixers/doctrine-profiler-bundle/license)](https://packagist.org/packages/pixers/doctrine-profiler-bundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/3d82da28-ed89-43af-a7ef-7be7470460e3/mini.png)](https://insight.sensiolabs.com/projects/3d82da28-ed89-43af-a7ef-7be7470460e3)
+
+
 PixersDoctrineProfilerBundle enables new panel in Symfony debug toolbar that allows
 you to profile performance of your database queries.
 
