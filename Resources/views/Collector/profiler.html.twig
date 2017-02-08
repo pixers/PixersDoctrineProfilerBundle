@@ -148,7 +148,7 @@
 
                             {% endfor %}
                         {% endspaceless %}
-                        {{ query.sql|doctrine_profiler_minify_query|doctrine_pretty_query(highlight_only = true) }} 
+                        {{ query.sql|doctrine_profiler_minify_query|doctrine_pretty_query(true) }}
                         <div>
                             <strong class="font-normal text-small">Parameters</strong>: {{ query.params|yaml_encode }}
                         </div>

@@ -23,7 +23,7 @@
             <li id="tree-{{ id|default('root') }}-row-{{ loop.index0 }}" data-query="{{ queryId }}" class="{{ isLeaf ? 'tree__leaf' : '' }}">
                 <div class="tree__row">
                     <div class="tree__col">
-                        <a href="#tree-{{ node.id }}"  onclick="Sfjs.toggleClass(this.parentNode.parentNode.parentNode, 'tree--open');return false;" class="tree__toggle">
+                        <a href="#tree-{{ node.id }}"  onclick="toggleClass(this.parentNode.parentNode.parentNode, 'tree--open');return false;" class="tree__toggle">
                             {% if not isLeaf %}
                                 <span class="tree__switch"></span>
                             {% endif %}

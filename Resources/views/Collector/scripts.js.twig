@@ -1,3 +1,11 @@
+function toggleClass(el, klass){
+    if(Sfjs.hasClass(el, klass)){
+        Sfjs.removeClass(el, klass);
+    }else{
+        Sfjs.addClass(el, klass);
+    }
+}
+
 function toggle(el) {
     if (typeof (el) == 'object') {
         var selector = el.getAttribute('href');
@@ -66,9 +74,9 @@ function highlightRow(row) {
     }
     var selected = row.parentNode.querySelector('.highlight-row');
     if(selected && selected!==row) {
-        Sfjs.toggleClass(selected,'highlight-row');
+        toggleClass(selected,'highlight-row');
     }
-    Sfjs.toggleClass(row,'highlight-row');
+    toggleClass(row,'highlight-row');
 }
 
 function openTree(selector) {
@@ -76,7 +84,7 @@ function openTree(selector) {
     var node = current = root.querySelector(selector);
     while(current!==root) {
         if(current.tagName == 'LI' && current.className.indexOf('tree--open')<0 ) {
-            Sfjs.toggleClass(current,'tree--open');
+            toggleClass(current,'tree--open');
         }
         current = current.parentNode;
     }

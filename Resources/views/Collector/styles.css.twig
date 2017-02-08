@@ -73,7 +73,7 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    z-index: 10000;
+    z-index: 10001;
 }
 .popup__close {
     position: absolute;
@@ -98,7 +98,7 @@
 .popup__window {
     display: none;
     position: fixed;
-    z-index: 10000;
+    z-index: 10002;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -119,4 +119,34 @@
 }
 .percval {
     font-size: 80%;
+}
+.metrics {
+    margin: 1em 0 0;
+    overflow: auto;
+}
+.metrics .metric {
+    float: left;
+    margin: 0 1em 1em 0;
+}
+.metric {
+    background: #FFF; border: 1px solid #E0E0E0; box-shadow: 0px 0px 1px rgba(128, 128, 128, .2);;
+    min-width: 100px;
+    min-height: 70px;
+}
+.metric .value {
+    display: block;
+    font-size: 28px;
+    padding: 8px 15px 4px;
+    text-align: center;
+    line-height: 1.4;
+}
+.metric .label {
+    background: #E0E0E0;
+    color: #222;
+    display: block;
+    font-size: 12px;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    white-space: nowrap;
 }
