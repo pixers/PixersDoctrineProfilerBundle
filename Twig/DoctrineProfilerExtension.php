@@ -28,4 +28,12 @@ class DoctrineProfilerExtension extends \Twig_Extension
     {
         return preg_replace('/SELECT.+FROM/', 'SELECT […] FROM', $sql);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return get_class($this);
+    }
 }
