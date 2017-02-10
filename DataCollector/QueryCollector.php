@@ -128,11 +128,11 @@ class QueryCollector extends DataCollector
      */
     public function getExecutionTime()
     {
-        $time = 1;
+        $time = 0;
         foreach ($this->data['queries'] as $query) {
             $time += $query['execution_time'];
         }
-        return $time;
+        return empty($time) ? 1 : $time;
     }
 
     /**
