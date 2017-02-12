@@ -81,7 +81,7 @@ About
 DoctrineProfilerBundle is an initiative of [PIXERS](http://pixersize.com):
 
 * Bartłomiej Ojrzeński <bartlomiej.ojrzenski@pixers.pl>
-* Antoni Orfin <antoni.orfin@pixers.pl>
+* Antoni Orfin <antoni@scalebeat.com>
 
 License
 -------
