@@ -124,9 +124,9 @@
                 <tr id="query-{{ i }}" onclick="highlightRow(this)">
                     <td class="nowrap">{{ loop.index }}</td>
                     <td class="nowrap">{{ query.count }}</td>
-                    <td class="nowrap">{{ '%0.2f'|format(query.execution_time * 1000) }}&nbsp;ms<br><span class="percval">({{ (query.execution_time / total_query_time*100)|round(2) }}%)</span></td>
+                    <td class="nowrap">{{ '%0.2f'|format(query.execution_time * 1000) }}&nbsp;ms<br><span class="percval">({{ total_query_time ? (query.execution_time / total_query_time*100)|round(2) : 0 }}%)</span></td>
                     <td class="nowrap">{{ '%0.2f'|format(query.hydration_time * 1000) }}&nbsp;ms<br><span class="percval">({{ total_hydration_time ? (query.hydration_time / total_hydration_time*100)|round(2) : 0 }}%)</span></td>
-                    <td class="nowrap">{{ '%0.2f'|format((query.execution_time+query.hydration_time) * 1000) }}&nbsp;ms<br><span class="percval">({{ ((query.execution_time + query.hydration_time) / total_time * 100)|round(2) }}%)</span></td>
+                    <td class="nowrap">{{ '%0.2f'|format((query.execution_time+query.hydration_time) * 1000) }}&nbsp;ms<br><span class="percval">({{ total_time ? ((query.execution_time + query.hydration_time) / total_time * 100)|round(2) : 0 }}%)</span></td>
                     <td class="nowrap">{{ (query.memory/1024)|round }}&nbsp;KB<br><span class="percval">({{ (query.memory / total_memory * 100)|round(2) }}%)</span></td>
                     <td class="nowrap">{{ query.result_count }}</td>
                     <td class="nowrap">{{ query.cacheable?'Yes':'No' }}</td>

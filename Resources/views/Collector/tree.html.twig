@@ -56,7 +56,7 @@
                     </div>
                     <div class="tree__col">
                         {{ '%0.2f'|format(valueAccessor.sum(node, 'execution_time')*1000) }}&nbsp;ms
-                        <br><span class="percval">({{ (valueAccessor.sum(node, 'execution_time')/total_query_time*100)|round(2) }}%)</span>
+                        <br><span class="percval">({{ total_query_time ? (valueAccessor.sum(node, 'execution_time')/total_query_time*100)|round(2) : 0 }}%)</span>
                     </div>
                     <div class="tree__col">
                         {{ '%0.2f'|format(valueAccessor.sum(node, 'hydration_time')*1000) }}&nbsp;ms
@@ -64,7 +64,7 @@
                     </div>
                     <div class="tree__col">
                         {{ '%0.2f'|format((valueAccessor.sum(node, 'execution_time')+valueAccessor.sum(node,'hydration_time'))*1000) }}&nbsp;ms
-                        <br><span class="percval">({{ ((valueAccessor.sum(node, 'hydration_time')+valueAccessor.sum(node, 'execution_time'))/total_time*100)|round(2) }}%)</span>
+                        <br><span class="percval">({{ total_time ? ((valueAccessor.sum(node, 'hydration_time')+valueAccessor.sum(node, 'execution_time'))/total_time*100)|round(2) : 0 }}%)</span>
                     </div>
                     <div class="tree__col">
                         {{ (valueAccessor.sum(node, 'memory')/1024)|round }}&nbsp;KB
