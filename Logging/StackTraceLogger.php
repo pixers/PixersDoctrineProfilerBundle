@@ -76,7 +76,7 @@ class StackTraceLogger implements SQLLogger
         $this->queries[$this->currentQuery] = array_merge($this->queries[$this->currentQuery], array(
             'execution_time' => microtime(true) - $this->start,
             'trace' => $trace,
-            'trace_hash' => md5(serialize($trace)),
+            'trace_hash' => md5(json_encode($trace)),
             'sql_hash' => md5($sql),
             'memory' => $memoryUsage - $this->memory
         ));
@@ -150,8 +150,8 @@ class StackTraceLogger implements SQLLogger
             'execution_time' => 0,
             'sql' => 'Cached query',
             'trace' => $trace,
-            'trace_hash' => md5(serialize($trace)),
-            'sql_hash' => md5(serialize($trace)),
+            'trace_hash' => md5(json_encode($trace)),
+            'sql_hash' => md5(json_encode($trace)),
             'memory' => $memoryUsage - $this->memory,
         );
     }
