@@ -132,7 +132,7 @@ class QueryCollector extends DataCollector
         foreach ($this->data['queries'] as $query) {
             $time += $query['execution_time'];
         }
-        return $time;
+        return empty($time) ? 1 : $time;
     }
 
     /**
