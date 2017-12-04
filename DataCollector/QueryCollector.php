@@ -213,6 +213,14 @@ class QueryCollector extends DataCollector
     }
 
     /**
+     * @return void
+     */
+    public function reset()
+    {
+        $this->data = array();
+    }
+
+    /**
      * Returns "internal" namespaces for query source selection
      *
      * @return array
