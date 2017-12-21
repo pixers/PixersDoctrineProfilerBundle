@@ -81,12 +81,16 @@ class StackTraceLogger implements SQLLogger
             'memory' => $memoryUsage - $this->memory
         ));
     }
-    
+
     /**
      * @param array $result
      */
     public function hydration($result)
     {
+        if (!is_array($result)) {
+            return;
+        }
+
         $this->queries[$this->currentQuery]['result_count'] += count($result);
     }
     
