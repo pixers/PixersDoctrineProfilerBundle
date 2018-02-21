@@ -3,17 +3,17 @@
 {% block head %}
     {{ parent() }}
     <style type="text/css">
-        {{ include('PixersDoctrineProfilerBundle:Collector:styles.css.twig') }}
+        {{ include('@PixersDoctrineProfiler/Collector/styles.css.twig') }}
     </style>
     <script type="text/javascript">
-        {{ include('PixersDoctrineProfilerBundle:Collector:scripts.js.twig') }}
+        {{ include('@PixersDoctrineProfiler/Collector/scripts.js.twig') }}
     </script>
 {% endblock head %}
 
 {% block toolbar %}
     {% if collector.count > 0 %}
         {% set icon %}
-            <span class="icon">{{ include('PixersDoctrineProfilerBundle:Collector:icon.svg.twig') }}</span>
+            <span class="icon">{{ include('@PixersDoctrineProfiler/Collector/icon.svg.twig') }}</span>
         {% endset %}
 
         {% set text %}
@@ -41,7 +41,7 @@
 
 {% block menu %}
     <span class="label {{ collector.count==0 ? 'disabled' : '' }}">
-        <span class="icon">{{ include('PixersDoctrineProfilerBundle:Collector:icon.svg.twig') }}</span>
+        <span class="icon">{{ include('@PixersDoctrineProfiler/Collector/icon.svg.twig') }}</span>
         <strong>Doctrine profiler</strong>
     </span>
 {% endblock %}
@@ -94,7 +94,7 @@
         {% set nodes = collector.flattenCallGraph.children %}
         {% set valueAccessor = collector.nodeValueAccessor %}
         <div class="tree-wrapper">
-            {% include 'PixersDoctrineProfilerBundle:Collector:tree.html.twig' with {
+            {% include '@PixersDoctrineProfiler/Collector/tree.html.twig' with {
                 nodes: nodes,
                 valueAccessor: valueAccessor,
             } %}

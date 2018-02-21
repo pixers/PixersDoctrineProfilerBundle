@@ -12,7 +12,7 @@
       <factory class="Pixers\DoctrineProfilerBundle\ORM\EntityManager" method="create"/>
     </service>
     <service id="pixers_doctrine_profiler.data_collector" class="Pixers\DoctrineProfilerBundle\DataCollector\QueryCollector" public="false">
-      <tag name="data_collector" template="PixersDoctrineProfilerBundle:Collector:profiler.html.twig" id="doctrine_profiler"/>
+      <tag name="data_collector" template="@PixersDoctrineProfiler/Collector/profiler.html.twig" id="doctrine_profiler"/>
       <argument type="service" id="pixers_doctrine_profiler.logger"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
