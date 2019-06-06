@@ -70,7 +70,7 @@
             <span class="value">{{ collector.count }}</span>
             <span class="label">Queries</span>
         </div>
-            
+
         <div class="metric">
             <span class="value">{{ collector.duplicatedcount }}</span>
             <span class="label">Duplicated queries</span>
@@ -80,7 +80,7 @@
             <span class="value">{{ (total_query_time * 1000)|round(2) }} ms</span>
             <span class="label">Query time</span>
         </div>
-        
+
         <div class="metric">
             <span class="value">{{ (total_hydration_time * 1000)|round }} ms</span>
             <span class="label">Hydration time</span>
@@ -121,6 +121,7 @@
         </thead>
         <tbody id="queries">
             {% for i, query in queries %}
+                {% set queryId = query.trace_hash~query.sql_hash %}
                 <tr id="query-{{ i }}" onclick="highlightRow(this)">
                     <td class="nowrap">{{ loop.index }}</td>
                     <td class="nowrap">{{ query.count }}</td>
@@ -153,8 +154,14 @@
                             <strong class="font-normal text-small">Parameters</strong>: {{ query.params|yaml_encode }}
                         </div>
                         <div class="text-small font-normal">
-                            <a href="#" class="text-small" onclick="openTree('[data-query={{ '"'~i~'"' }}]');return false;">Jump to callgraph</a>  &nbsp;&nbsp; 
+                            <a href="#" class="text-small" onclick="openTree('[data-query={{ '"'~i~'"' }}]');return false;">Jump to callgraph</a> &nbsp;&nbsp;
+                            <a href="#" onclick="Popup.load('#original-query-{{ queryId }}');return false;">View runnable query</a>&nbsp;&nbsp;
                             <a href="{{ path('_profiler', {panel: 'doctrine_profiler', token: token, page: 'trace', id: i}) }}" data-target-id="trace-{{ i }}" onclick="Popup.load(this.href);return false;">Show trace</a>
+                        </div>
+                        <div style="display:none" id="original-query-{{ queryId }}">
+                            <div class="queries-table">
+                                {{ (query.sql ~ ';')|doctrine_replace_query_parameters(query.params)|doctrine_pretty_query(true) }}
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -164,7 +171,7 @@
     {% endif %}
     <div class="popup__shadow" onclick="Popup.close()"></div>
     <div class="popup__window">
-        <a href="#" class="popup__close" onclick="Popup.close();return false;">&times;</a>    
+        <a href="#" class="popup__close" onclick="Popup.close();return false;">&times;</a>
         <div class="popup__content"></div>
     </div>
 {% endblock %}
