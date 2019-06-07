@@ -20,6 +20,7 @@
       <tag name="twig.extension"/>
     </service>
     <service id="pixers_doctrine_profiler.profiler_controller" class="Pixers\DoctrineProfilerBundle\Controller\ProfilerController">
+      <tag name="controller.service_arguments"/>
       <argument type="service" id="profiler" />
       <argument type="service" id="templating" />
     </service>
