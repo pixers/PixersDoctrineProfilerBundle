@@ -4,14 +4,14 @@
     "description": "PIXERS Doctrine profiler bundle",
     "license": "BSD-3-Clause",
     "require": {
-        "php": ">=5.4",
-        "doctrine/orm": "~2.4",
-        "doctrine/doctrine-bundle": "~1.2",
-        "symfony/framework-bundle": "~2.6 || ~3.0 || ~4.0",
-        "symfony/stopwatch": "~2.6 || ~3.0 || ~4.0"
+        "php": ">=7.1",
+        "doctrine/orm": "~2.5",
+        "doctrine/doctrine-bundle": "~1.6",
+        "symfony/framework-bundle": "~2.8 || ~3.4 || ~4.1",
+        "symfony/stopwatch": "~2.8 || ~3.4 || ~4.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~5.0"
     },
     "authors": [
         {
