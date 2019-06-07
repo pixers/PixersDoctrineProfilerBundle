@@ -3,9 +3,9 @@
         <div class="tree__header">
             <div class="tree__col"><span></span>Info</div>
             {% for label in ['Count', 'Query time', 'Hydration time', 'Total time', 'Memory'] %}
-                <div 
-                    class="tree__col" 
-                    onclick="javascript:sortTable(this, {{ loop.index }}, 'tree-{{ id|default('root') }}', '.tree__row>.tree__col', 'ul')" 
+                <div
+                    class="tree__col"
+                    onclick="javascript:sortTable(this, {{ loop.index }}, 'tree-{{ id|default('root') }}', '.tree__row>.tree__col', 'ul')"
                     style="cursor: pointer"><span></span>{{ label }}
                 </div>
             {% endfor %}
@@ -40,15 +40,16 @@
                             <em>in {{ node.trace.file|format_file(node.trace.line) }}</em><br>
                         {% endif %}
                         {% if isLeaf %}
-                            <a href="#query-{{ queryId }}" class="text-small" onclick="highlightRow('#query-{{ queryId }}')">Jump to query</a> &nbsp;&nbsp; 
+                            <a href="#query-{{ queryId }}" class="text-small" onclick="highlightRow('#query-{{ queryId }}')">Jump to query</a> &nbsp;&nbsp;
                             <a href="#" onclick="Popup.load('#sql-{{ queryId }}');return false;" class="text-small">Show query</a> &nbsp;&nbsp;
+                            <a href="#" onclick="Popup.load('#original-query-{{ queryId }}');return false;" class="text-small">View runnable query</a> &nbsp;&nbsp;
                             <a href="{{ path('_profiler', {panel: 'doctrine_profiler', token: token, page: 'trace', id: queryId}) }}" class="text-small"  onclick="Popup.load(this.href);return false;">Show trace</a>
-                            <div style="display:none" id="sql-{{ queryId }}"> 
+                            <div style="display:none" id="sql-{{ queryId }}">
                                 {{ query.sql|doctrine_pretty_query() }}
                                 <div>
                                     <strong class="font-normal text-small">Parameters</strong>: {{ query.params|yaml_encode }}
                                 </div>
-                            </div>   
+                            </div>
                         {% endif %}
                     </div>
                     <div class="tree__col">
