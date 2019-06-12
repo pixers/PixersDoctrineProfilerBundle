@@ -65,6 +65,7 @@
     {% set total_time = total_hydration_time + total_query_time %}
     {% set total_memory = collector.memoryusage %}
     {% set queries = collector.queries %}
+    {% set connections_count = collector.connectionsCount %}
     <div class="metrics">
         <div class="metric">
             <span class="value">{{ collector.count }}</span>
@@ -153,6 +154,11 @@
                         <div>
                             <strong class="font-normal text-small">Parameters</strong>: {{ query.params|yaml_encode }}
                         </div>
+                        {% if connections_count > 1 %}
+                            <div>
+                                <strong class="font-normal text-small">Connection</strong>: {{ query.connection }}
+                            </div>
+                        {% endif %}
                         <div class="text-small font-normal">
                             <a href="#" class="text-small" onclick="openTree('[data-query={{ '"'~i~'"' }}]');return false;">Jump to callgraph</a> &nbsp;&nbsp;
                             <a href="#" onclick="Popup.load('#original-query-{{ queryId }}');return false;">View runnable query</a>&nbsp;&nbsp;

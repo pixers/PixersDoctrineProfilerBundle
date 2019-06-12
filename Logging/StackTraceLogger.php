@@ -15,31 +15,34 @@ use PDOStatement;
  */
 class StackTraceLogger implements SQLLogger
 {
+
+    /**
+     * Declared as static in order to sort queries by connections
+     *
+     * @var int
+     */
+    protected static $currentQuery = 0;
+
+    /**
+     * @var int
+     */
+    protected static $currentHydration = 0;
+
     /**
      * @var array
      */
     protected $queries = array();
-    
+
     /**
      * @var float|null
      */
     protected $start = null;
-    
-    /**
-     * @var int
-     */
-    protected $currentQuery = 0;
-    
-    /**
-     * @var int
-     */
-    protected $currentHydration = 0;
-    
+
     /**
      * @var float|null
      */
     protected $hydrationStart = null;
-    
+
     /**
      * @var int
      */
@@ -52,16 +55,16 @@ class StackTraceLogger implements SQLLogger
     {
         $this->memory = memory_get_usage();
         $this->start = microtime(true);
-        $this->queries[++$this->currentQuery] = array(
+        $this->queries[++self::$currentQuery] = array(
             'sql' => $sql,
-            'params' => $params,
+            'params' => $params ?? array(),
             'types' => $types,
             'execution_time' => 0,
             'hydrator' => '',
             'hydration_time' => 0,
             'result_count' => 0,
             'cacheable' => false,
-            'cached' => false
+            'cached' => false,
         );
     }
 
@@ -72,8 +75,8 @@ class StackTraceLogger implements SQLLogger
     {
         $memoryUsage = memory_get_usage();
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        $sql = $this->queries[$this->currentQuery]['sql'];
-        $this->queries[$this->currentQuery] = array_merge($this->queries[$this->currentQuery], array(
+        $sql = $this->queries[self::$currentQuery]['sql'];
+        $this->queries[self::$currentQuery] = array_merge($this->queries[self::$currentQuery], array(
             'execution_time' => microtime(true) - $this->start,
             'trace' => $trace,
             'trace_hash' => md5(json_encode($trace)),
@@ -91,9 +94,9 @@ class StackTraceLogger implements SQLLogger
             return;
         }
 
-        $this->queries[$this->currentQuery]['result_count'] += count($result);
+        $this->queries[self::$currentQuery]['result_count'] += count($result);
     }
-    
+
 
     /**
      * @param AbstractHydrator $hydrator
@@ -102,51 +105,51 @@ class StackTraceLogger implements SQLLogger
      */
     public function startHydration(AbstractHydrator $hydrator, $stmt, $resultSetMapping)
     {
-        ++$this->currentHydration;
-        
-        if ($this->currentHydration > $this->currentQuery) {
+        ++self::$currentHydration;
+
+        if (self::$currentHydration > self::$currentQuery) {
             $this->createCachedQueryLog($stmt, $resultSetMapping);
         }
-        
+
         $this->hydrationStart = microtime(true);
-        $this->queries[$this->currentQuery]['hydrator'] = get_class($hydrator);
+        $this->queries[self::$currentQuery]['hydrator'] = get_class($hydrator);
     }
-    
+
     /**
      * @param object $stmt
      */
     public function stopHydration($stmt)
     {
         if ($stmt instanceof ResultCacheStatement) {
-            $this->queries[$this->currentQuery]['cacheable'] = true;
+            $this->queries[self::$currentQuery]['cacheable'] = true;
         }
-        
+
         if ($stmt instanceof ArrayStatement) {
-            $this->queries[$this->currentQuery]['cacheable'] = true;
-            $this->queries[$this->currentQuery]['cached'] = true;
+            $this->queries[self::$currentQuery]['cacheable'] = true;
+            $this->queries[self::$currentQuery]['cached'] = true;
         }
-               
+
         if ($stmt instanceof PDOStatement) {
-            $this->queries[$this->currentQuery]['row_count'] = $stmt->rowCount();
+            $this->queries[self::$currentQuery]['row_count'] = $stmt->rowCount();
         } else {
-            $this->queries[$this->currentQuery]['row_count'] = null;
+            $this->queries[self::$currentQuery]['row_count'] = null;
         }
-        
-        $this->queries[$this->currentQuery]['hydration_time'] = microtime(true) - $this->hydrationStart;
+
+        $this->queries[self::$currentQuery]['hydration_time'] = microtime(true) - $this->hydrationStart;
     }
-    
+
     /**
      * @param object $stmt
      */
     protected function createCachedQueryLog($stmt)
     {
-        ++$this->currentQuery;
+        ++self::$currentQuery;
         $memoryUsage = memory_get_usage();
-        
+
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        
-        $this->queries[$this->currentQuery] = array(
-            'params' => null,
+
+        $this->queries[self::$currentQuery] = array(
+            'params' => [],
             'result_count' => 0,
             'hydration_time' => 0,
             'cacheable' => false,
@@ -159,7 +162,7 @@ class StackTraceLogger implements SQLLogger
             'memory' => $memoryUsage - $this->memory,
         );
     }
-    
+
     /**
      * @return array
      */
