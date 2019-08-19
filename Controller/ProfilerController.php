@@ -4,7 +4,7 @@ namespace Pixers\DoctrineProfilerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 /**
  * ProfilerController.
@@ -17,16 +17,13 @@ class ProfilerController
      * @var Profiler
      */
     private $profiler;
+    /** @var Environment */
+    private $twig;
 
-    /**
-     * @var EngineInterface
-     */
-    private $templating;
-
-    public function __construct(Profiler $profiler, EngineInterface $templating)
+    public function __construct(Profiler $profiler, Environment $twig)
     {
         $this->profiler = $profiler;
-        $this->templating = $templating;
+        $this->twig = $twig;
     }
 
     /**
@@ -34,10 +31,8 @@ class ProfilerController
      *
      * @param string $token The profiler token
      * @param string $id
-     *
-     * @return Response A Response instance
      */
-    public function traceAction($token, $id)
+    public function traceAction($token, $id): Response
     {
         $this->profiler->disable();
         $profile = $this->profiler->loadProfile($token);
@@ -55,11 +50,17 @@ class ProfilerController
             }
         }
 
-        return $this->templating->renderResponse('PixersDoctrineProfilerBundle:Collector:trace.html.twig', array(
-            'source' => $source,
-            'traces' => $query['trace'],
-            'id' => $id,
-            'prefix' => $id,
-        ));
+        return new Response(
+            $this->twig
+                ->render(
+                    'PixersDoctrineProfilerBundle:Collector:trace.html.twig',
+                    [
+                        'source' => $source,
+                        'traces' => $query['trace'],
+                        'id' => $id,
+                        'prefix' => $id,
+                    ]
+                )
+        );
     }
 }
