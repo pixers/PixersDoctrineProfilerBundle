@@ -8,7 +8,9 @@
         "doctrine/orm": "~2.5",
         "doctrine/doctrine-bundle": "~1.6",
         "symfony/framework-bundle": "~2.8 || ~3.4 || ~4.1",
-        "symfony/stopwatch": "~2.8 || ~3.4 || ~4.1"
+        "symfony/stopwatch": "~2.8 || ~3.4 || ~4.1",
+        "symfony/twig-bundle": "~2.8 || ~3.4 || ~4.1",
+        "twig/twig": "^1.38 || ^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.0"

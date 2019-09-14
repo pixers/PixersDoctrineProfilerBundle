@@ -22,7 +22,7 @@
     <service id="pixers_doctrine_profiler.profiler_controller" class="Pixers\DoctrineProfilerBundle\Controller\ProfilerController">
       <tag name="controller.service_arguments"/>
       <argument type="service" id="profiler" />
-      <argument type="service" id="templating" />
+      <argument type="service" id="twig" />
     </service>
   </services>
 </container>
