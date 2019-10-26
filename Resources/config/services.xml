@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
   <services>
-    <service id="pixers_doctrine_profiler.logger" class="Pixers\DoctrineProfilerBundle\Logging\StackTraceLogger"/>
+    <service id="pixers_doctrine_profiler.logger" class="Pixers\DoctrineProfilerBundle\Logging\StackTraceLogger" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Pixers\DoctrineProfilerBundle\ORM\EntityManager">
       <call method="setStopWatch">
         <argument type="service" id="debug.stopwatch"/>
-      </call>
-      <call method="setLogger">
-        <argument type="service" id="pixers_doctrine_profiler.logger"/>
       </call>
       <factory class="Pixers\DoctrineProfilerBundle\ORM\EntityManager" method="create"/>
     </service>
     <service id="pixers_doctrine_profiler.data_collector" class="Pixers\DoctrineProfilerBundle\DataCollector\QueryCollector" public="false">
       <tag name="data_collector" template="@PixersDoctrineProfiler/Collector/profiler.html.twig" id="doctrine_profiler"/>
-      <argument type="service" id="pixers_doctrine_profiler.logger"/>
       <argument type="service" id="debug.stopwatch"/>
+      <argument type="service" id="doctrine" />
     </service>
     <service id="pixers_doctrine_profiler.twig_extension" class="Pixers\DoctrineProfilerBundle\Twig\DoctrineProfilerExtension">
       <tag name="twig.extension"/>
