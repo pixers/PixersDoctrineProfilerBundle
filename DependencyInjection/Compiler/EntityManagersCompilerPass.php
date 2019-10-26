@@ -46,8 +46,7 @@ class EntityManagersCompilerPass implements CompilerPassInterface
 
             $entityManagerDefinition = $container->getDefinition(sprintf('doctrine.orm.%s_entity_manager', $name));
 
-            // Argument 0 is a Pixers entity manager
-            $container->getDefinition($entityManagerDefinition->getArgument(0))
+            $container->getDefinition('doctrine.orm.entity_manager.abstract')
                 ->addMethodCall('setLogger', array($logger));
         }
     }
